@@ -17,7 +17,7 @@ const App = () => {
       case 'today':
         setSelectedDate(new Date());
         break;
-      case 'tomorrow':
+      case 'tomorrow': // Disable tomorrow by keeping maxDate today
         setSelectedDate(new Date(Date.now() + 24 * 60 * 60 * 1000));
         break;
       case 'yesterday':
@@ -63,6 +63,7 @@ const App = () => {
             selected={selectedDate}
             onChange={handleDateChange}
             dateFormat="dd/MM/yyyy"
+            maxDate={new Date()} // Prevent selection after today
             className="date-picker"
             showPopperArrow={false}
           />
@@ -112,3 +113,4 @@ const App = () => {
 };
 
 export default App;
+  
