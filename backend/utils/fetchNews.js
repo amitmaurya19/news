@@ -1,24 +1,23 @@
 const axios = require('axios');
 
+// Load environment variables from .env file
+require('dotenv').config();
+
 const fetchNewsFromAPIs = async () => {
-  const api1 = 'https://api.example1.com/news';
-  const api2 = 'https://api.example2.com/news';
-  const api3 = 'https://api.example3.com/news';
+  const apiKey = process.env.NEWS_API_KEY;
+  const apiUrl = `https://newsapi.org/v2/top-headlines?apiKey=${apiKey}&country=us`;
 
   try {
-    const [response1, response2, response3] = await Promise.all([
-      axios.get(api1),
-      axios.get(api2),
-      axios.get(api3),
-    ]);
+    const response = await axios.get(apiUrl);
 
-    return [
-      ...response1.data.articles,
-      ...response2.data.articles,
-      ...response3.data.articles,
-    ];
+    if (response.data && response.data.articles) {
+      return response.data.articles;
+    } else {
+      console.error('No news articles found from the API');
+      return [];
+    }
   } catch (error) {
-    console.error('Error fetching news:', error);
+    console.error('Error fetching news from API:', error.message);
     return [];
   }
 };
